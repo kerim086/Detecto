@@ -1,39 +1,53 @@
+# Website used for testing - https://humanbenchmark.com/tests/reactiontime
 import mss
 from PIL import Image
 import time
 import pyautogui
+import keyboard
 
 target_color = (75, 219, 106)
 
 region = {
-    "top": 300, 
-    "left": 500, 
-    "width": 200, 
+    "top": 300,
+    "left": 500,
+    "width": 200,
     "height": 200
 }
 
+running = False
 color_found = False
 
+def toggle():
+    global running
+    running = not running
+    print("Scanner:", "ON" if running else "OFF")
+
+keyboard.add_hotkey("F8", toggle)  # Hotkey: F8 to start / stop the scan
+
 with mss.mss() as sct:
+    print("Press F8, to beginn or to stop the Scanner.")
+
     while True:
-        screenshot = sct.grab(region)
-        img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
+        if running:
+            screenshot = sct.grab(region)
+            img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
+            pixels = img.load()
 
-        pixels = img.load()
-        found = False
+            found = False
 
-        for x in range(img.width):
-            for y in range(img.height):
-                if pixels[x, y] == target_color:
-                    found = True
+            for x in range(img.width):
+                for y in range(img.height):
+                    if pixels[x, y] == target_color:
+                        found = True
+                        break
+                if found:
                     break
-            if found:
-                break
 
-        if found and not color_found:
-            pyautogui.click()
-            color_found = True
-        elif not found:
-            color_found = False
+            if found and not color_found:
+                pyautogui.click()
+                print("Color detected - Click")
+                color_found = True
+            elif not found:
+                color_found = False
 
-        time.sleep(0.01)
+        time.sleep(0.35)
