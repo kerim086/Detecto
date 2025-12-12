@@ -50,4 +50,4 @@ with mss.mss() as sct:
             elif not found:
                 color_found = False
 
-        time.sleep(0.35)
+        time.sleep(0.15)
