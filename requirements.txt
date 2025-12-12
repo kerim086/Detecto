@@ -1,5 +1,4 @@
-pyautogui
-Pillow
 mss
-time
 keyboard
+pyautogui
+pillow
