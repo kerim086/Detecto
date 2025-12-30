@@ -39,7 +39,7 @@ def toggle():
     running = not running
     print("Scanner:", "ON" if running else "OFF")
 
-keyboard.add_hotkey("F8", toggle)# Hotkey: F8 to start / stop the scan
+keyboard.add_hotkey("F8", toggle)   # Hotkey: F8 to start / stop the scan
 keyboard.add_hotkey("F7", pick_color)
 
 with mss.mss() as sct:
